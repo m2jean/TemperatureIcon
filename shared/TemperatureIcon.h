@@ -15,8 +15,21 @@ public:
     TemperatureIcon();
     ~TemperatureIcon();
 
-    void CreateTemperatureIcon();
+    /// <summary>
+    /// Create and output an ICO file with temperature icons of various sizes
+    /// </summary>
+    void CreateTemperatureIconResource(UINT temperature, WCHAR unit, WCHAR *outputPath);
+
+    /// <summary>
+    /// If called after CreateTemperatureIconResource, draw the icons of different sizes to the given window
+    /// </summary>
     void DrawIcons(HWND hWnd);
+
+    /// <summary>
+    /// Create a square temperature icon with given size
+    /// </summary>
+    /// <param name="size">The size of width and height in pixel</param>
+    HICON CreateTemperatureIcon(UINT temperature, WCHAR unit, UINT size);
 
 private:
     bool m_magickInstantiatedByThis = false;

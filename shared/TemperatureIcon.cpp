@@ -10,10 +10,11 @@
 #include <MagickCore/constitute.h>
 #include <wincodec.h>
 #include <dwrite.h>
+#include "Icons.h"
 
 const UINT TemperatureIcon::g_bitmapSizes[] = { 256, 128, 64, 32, 16 };
 
-TemperatureIcon::TemperatureIcon() {
+TemperatureIcon::TemperatureIcon() : m_pBitmaps{ NULL } {
 	HRESULT hr;
 
 	const D2D1_FACTORY_OPTIONS factoryOption{ D2D1_DEBUG_LEVEL_WARNING };
@@ -37,7 +38,8 @@ TemperatureIcon::TemperatureIcon() {
 
 TemperatureIcon::~TemperatureIcon() {
 	for (int i = 0; i < g_numBitmapSizes; ++i)
-		m_pBitmaps[i]->Release();
+		if (m_pBitmaps[i] != NULL)
+			m_pBitmaps[i]->Release();
 
 	if (m_magickInstantiatedByThis && IsMagickCoreInstantiated())
 		MagickCoreTerminus();
@@ -149,8 +151,7 @@ Image* TemperatureIcon::ConvertToMagickImage(IWICBitmap* pBitmap)
 	return pImage;
 }
 
-
-void TemperatureIcon::CreateTemperatureIcon()
+void TemperatureIcon::CreateTemperatureIconResource(UINT temperature, WCHAR unit, WCHAR *outputPath)
 {
 	HRESULT hr;
 
@@ -170,7 +171,7 @@ void TemperatureIcon::CreateTemperatureIcon()
 		pWicFactory->CreateBitmap(size, size, GUID_WICPixelFormat32bppPBGRA, WICBitmapCacheOnDemand, &pBitmap);
 		m_pBitmaps[i] = pBitmap;
 
-		DrawTemperature(pDwFactory, pBitmap, fontSize, 12U, L'F');
+		DrawTemperature(pDwFactory, pBitmap, fontSize, temperature, unit);
 
 		Image* pImage = ConvertToMagickImage(pBitmap);
 		AppendImageToList(&icos, pImage);
@@ -179,7 +180,7 @@ void TemperatureIcon::CreateTemperatureIcon()
 	ExceptionInfo* exception = AcquireExceptionInfo();
 
 	CHAR icoName[MAX_PATH];
-	wcstombs_s(NULL, icoName, L"icos.ico", MAX_PATH);
+	wcstombs_s(NULL, icoName, outputPath, MAX_PATH);
 
 	ImageInfo* imageInfo = CloneImageInfo(NULL);
 	MagickBooleanType result = WriteImages(imageInfo, icos, icoName, exception);
@@ -225,4 +226,48 @@ void TemperatureIcon::DrawIcons(HWND hWnd) {
 
 	pBrush->Release();
 	pHwndRenderTarget->Release();
+}
+
+HICON TemperatureIcon::CreateTemperatureIcon(UINT temperature, WCHAR unit, UINT size)
+{
+	HRESULT hr;
+
+	IWICImagingFactory* pWicFactory = NULL;
+	hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pWicFactory));
+
+	IDWriteFactory* pDwFactory;
+	hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, _uuidof(IDWriteFactory), (IUnknown**)&pDwFactory);
+
+	FLOAT fontSize = size * 0.8f;
+
+	IWICBitmap* pBitmap;
+	pWicFactory->CreateBitmap(size, size, GUID_WICPixelFormat32bppPBGRA, WICBitmapCacheOnDemand, &pBitmap);
+
+	DrawTemperature(pDwFactory, pBitmap, fontSize, temperature, unit);
+
+	Image* pImage = ConvertToMagickImage(pBitmap);
+	
+	ExceptionInfo* exception = AcquireExceptionInfo();
+	ImageInfo* imageInfo = CloneImageInfo(NULL);
+
+	char format[] = "ico";
+	memcpy_s(imageInfo->magick, ARRAYSIZE(imageInfo->magick), format, ARRAYSIZE(format));
+
+	size_t length;
+	void *memoryImage = ImageToBlob(imageInfo, pImage, &length, exception);
+
+	DestroyExceptionInfo(exception);
+	DestroyImageInfo(imageInfo);
+	DestroyImage(pImage);
+
+	pDwFactory->Release();
+	pWicFactory->Release();
+
+	LPICONDIR icondir = (LPICONDIR)memoryImage;
+	byte* pIconImage = (byte*)memoryImage + icondir->idEntries[0].dwImageOffset;
+	HICON hIcon = CreateIconFromResourceEx(pIconImage, icondir->idEntries[0].dwBytesInRes, TRUE, 0x30000, size, size, NULL);
+
+	RelinquishMagickMemory(memoryImage);
+
+	return hIcon;
 }

@@ -24,23 +24,32 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderedIcon.h">
+    <ClInclude Include="TemperatureTrayIcon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TemperatureIcon.h">
+    <ClInclude Include="..\shared\WeatherGovApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\WeatherComApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RenderedIcon.cpp">
+    <ClCompile Include="TemperatureTrayIcon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TemperatureIcon.cpp">
+    <ClCompile Include="..\shared\TemperatureIcon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\WeatherGovApi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\WeatherComApi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="RenderedIcon.rc">
+    <ResourceCompile Include="TemperatureTrayIcon.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -48,7 +57,7 @@
     <Image Include="small.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RenderedIcon.ico">
+    <Image Include="TemperatureTrayIcon.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
