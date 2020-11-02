@@ -82,12 +82,12 @@ void TemperatureIcon::WriteWICBitmap(IWICImagingFactory* pWicFactory, IWICBitmap
 	pStream->Release();
 }
 
-void TemperatureIcon::DrawTemperature(IDWriteFactory* pDwFactory, IWICBitmap* pBitmap, FLOAT fontSize, UINT temperature, WCHAR unit)
+void TemperatureIcon::DrawTemperature(IDWriteFactory* pDwFactory, IWICBitmap* pBitmap, FLOAT fontSize, INT temperature, WCHAR unit)
 {
 	HRESULT hr;
 
 	WCHAR text[8];
-	_ultow_s(temperature, text, 10);
+	_ltow_s(temperature, text, 10);
 	size_t tempEnd = 0;
 	StringCchLengthW(text, ARRAYSIZE(text), &tempEnd);
 	text[tempEnd] = unit;
@@ -151,7 +151,7 @@ Image* TemperatureIcon::ConvertToMagickImage(IWICBitmap* pBitmap)
 	return pImage;
 }
 
-void TemperatureIcon::CreateTemperatureIconResource(UINT temperature, WCHAR unit, WCHAR *outputPath)
+void TemperatureIcon::CreateTemperatureIconResource(INT temperature, WCHAR unit, WCHAR *outputPath)
 {
 	HRESULT hr;
 
@@ -228,7 +228,7 @@ void TemperatureIcon::DrawIcons(HWND hWnd) {
 	pHwndRenderTarget->Release();
 }
 
-HICON TemperatureIcon::CreateTemperatureIcon(UINT temperature, WCHAR unit, UINT size)
+HICON TemperatureIcon::CreateTemperatureIcon(INT temperature, WCHAR unit, UINT size)
 {
 	HRESULT hr;
 

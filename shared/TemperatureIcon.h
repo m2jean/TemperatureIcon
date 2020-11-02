@@ -18,7 +18,7 @@ public:
     /// <summary>
     /// Create and output an ICO file with temperature icons of various sizes
     /// </summary>
-    void CreateTemperatureIconResource(UINT temperature, WCHAR unit, WCHAR *outputPath);
+    void CreateTemperatureIconResource(INT temperature, WCHAR unit, WCHAR *outputPath);
 
     /// <summary>
     /// If called after CreateTemperatureIconResource, draw the icons of different sizes to the given window
@@ -29,7 +29,7 @@ public:
     /// Create a square temperature icon with given size
     /// </summary>
     /// <param name="size">The size of width and height in pixel</param>
-    HICON CreateTemperatureIcon(UINT temperature, WCHAR unit, UINT size);
+    HICON CreateTemperatureIcon(INT temperature, WCHAR unit, UINT size);
 
 private:
     bool m_magickInstantiatedByThis = false;
@@ -37,6 +37,6 @@ private:
     ID2D1Factory* m_dx2Factory;
 
     void WriteWICBitmap(IWICImagingFactory* pWicFactory, IWICBitmap* pBitmap, WCHAR* filename);
-    void DrawTemperature(IDWriteFactory* pDwFactory, IWICBitmap* pBitmap, FLOAT fontSize, UINT temperature, WCHAR unit);
+    void DrawTemperature(IDWriteFactory* pDwFactory, IWICBitmap* pBitmap, FLOAT fontSize, INT temperature, WCHAR unit);
     Image* ConvertToMagickImage(IWICBitmap* pBitmap);
 };
