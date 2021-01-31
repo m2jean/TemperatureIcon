@@ -4,8 +4,8 @@ A Win32 program that shows current temperature as tray icon
 ![Example](/docs/images/trayIcon.png)
 
 ### Instruction
-* Register on https://callforcode.weather.com/
-* Put the api key into `apiKey`
+* Register on https://openweathermap.org/api
+* Put the api key into a file with the name `apiKey` in the working directory
 
 ### Features
 * Format and render text to a Windows Imaging Component bitmap using Direct Write (and Direct 2D)
@@ -20,5 +20,6 @@ A Win32 program that shows current temperature as tray icon
 * ImageMagick
 * [WinHTTPWrappers](http://www.naughter.com/winhttpwrappers.html)
 * [nlohmann/json](https://github.com/nlohmann/json)
-* [The Weather Channel](https://weather.com/) API
+* [Open Weather](https://openweathermap.org/) API
+* (decommissioned) [The Weather Channel](https://weather.com/) API
 * (unused) [National Weather Service API](https://www.weather.gov/documentation/services-web-api)
