@@ -1,19 +1,13 @@
 #pragma once
 
-#include <windows.h>
-#include "json.hpp"
-#include "WinHTTPWrappers.h"
+#include "CTempDownloader.h"
 
-class WeatherGovApi : WinHTTPWrappers::CAsyncDownloader {
+class WeatherGovApi : CTempDownloader {
 public:
     WeatherGovApi(void(*currentTempCallback)(float));
-    void DownloadTemperature();
+    bool DownloadTemperature();
+protected:
+    virtual bool GetCurrentTemp(nlohmann::json, float* currentTemp);
 private:
-    WinHTTPWrappers::CSession m_session;
-    WinHTTPWrappers::CConnection m_connection;
     const WCHAR* m_accepts[2] = { L"application/geo+json", NULL };
-
-    void(*m_callback)(float);
-
-    virtual HRESULT OnReadCompleteCallback(_In_ HINTERNET, _In_ DWORD, _In_opt_ LPVOID, _In_ DWORD) override;
 };
