@@ -5,7 +5,7 @@
 #include "TemperatureTrayIcon.h"
 #include <combaseapi.h>
 #include <math.h>
-#include "../shared/WeatherComApi.h"
+#include "../shared/OpenWeatherApi.h"
 #include "../shared/TemperatureIcon.h"
 #include "../shared/notifyIcon.h"
 #include "../shared/dbprintf.h"
@@ -24,7 +24,7 @@ void OnTemperatureUpdated(float);
 
 int g_smallIconSize;
 HICON g_icon;
-WeatherComApi g_tempDownloader(OnTemperatureUpdated);
+OpenWeatherApi g_tempDownloader(OnTemperatureUpdated);
 TemperatureIcon g_tempIcon;
 UINT_PTR g_uTimer;
 CTrayIcon g_trayIcon;
@@ -237,7 +237,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 void DowloadTemperature() {
     if (!g_tempDownloader.DownloadTemperature())
     {
-        MessageBox(g_mainWnd, TEXT("Cannot find file \"apiKey\" for api.weather.com"), TEXT("apiKey Error"), MB_OK);
+        MessageBox(g_mainWnd, TEXT("Cannot find file \"apiKey\""), TEXT("apiKey Error"), MB_OK);
         DestroyWindow(g_mainWnd);
     }
 }

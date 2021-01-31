@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\CTempDownloader.h" />
+    <ClInclude Include="..\shared\OpenWeatherApi.h" />
     <ClInclude Include="..\shared\WeatherComApi.h" />
     <ClInclude Include="..\shared\WeatherGovApi.h" />
     <ClInclude Include="framework.h" />
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\shared\CTempDownloader.cpp" />
+    <ClCompile Include="..\shared\OpenWeatherApi.cpp" />
     <ClCompile Include="..\shared\WeatherComApi.cpp" />
     <ClCompile Include="..\shared\WeatherGovApi.cpp" />
     <ClCompile Include="..\shared\TemperatureIcon.cpp" />
